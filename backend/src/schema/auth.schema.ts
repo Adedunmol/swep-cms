@@ -20,5 +20,5 @@ export const loginUserSchema = object({
     })
 })
 
-export type loginUserInput = TypeOf<typeof loginUserSchema>
-export type createUserInput = TypeOf<typeof createUserSchema>;
+export type LoginUserInput = TypeOf<typeof loginUserSchema>
+export type CreateUserInput = TypeOf<typeof createUserSchema>;
