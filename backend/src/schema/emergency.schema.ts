@@ -1,4 +1,4 @@
-import { object, string, TypeOf, boolean } from "zod";
+import { object, string, TypeOf, boolean, number } from "zod";
 
 export const createEmergencySchema = object({
     body: object({
@@ -11,4 +11,11 @@ export const createEmergencySchema = object({
     })
 })
 
+export const getEmergencySchema = object({
+    params: object({
+        id: string({ required_error: "id is required" })
+    })
+})
+
+export type GetEmergencyInput = TypeOf<typeof getEmergencySchema>
 export type CreateEmergencyInput = TypeOf<typeof createEmergencySchema>;

@@ -10,4 +10,11 @@ export const createAppointmentSchema = object({
     })
 })
 
+export const getAppointmentSchema = object({
+    params: object({
+        id: string({ required_error: "id is required" })
+    })
+})
+
+export type GetAppointmentInput = TypeOf<typeof getAppointmentSchema>
 export type CreateAppointmentInput = TypeOf<typeof createAppointmentSchema>;
