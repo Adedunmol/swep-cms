@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
-import userService from '../service/user.service'
-import { CreateUserInput, LoginUserInput } from '../schema/auth.schema'
+import userService from '../services/user.service'
+import { CreateUserInput, LoginUserInput } from '../schema/user.schema'
 import jwt from 'jsonwebtoken'
 
 export const createUserController = async (req: Request<{}, {}, CreateUserInput['body']>, res: Response) => {
