@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm install && npm run migrate && tsc",
+    "start:prod": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "migrate": "npx knex migrate:latest --env production --knexfile src/database/knexfile.ts",
+    "rollback:all": "npx knex migrate:rollback --all --knexfile src/database/knexfile.ts",
+    "tsc": "typescript"
   },
   "keywords": [],
   "author": "",
