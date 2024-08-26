@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUserController, loginController } from '../controllers/auth.controller';
+import { createUserController, loginController } from '../controllers/user.controller';
 import validateResource from '../middlewares/validate-resource';
 import { createUserSchema, loginUserSchema } from '../schema/auth.schema';
 

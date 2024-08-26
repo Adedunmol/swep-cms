@@ -1,12 +1,12 @@
 import { Response, Request } from 'express'
-import { createUserService, validatePassword } from '../service/auth.service'
+import userService from '../service/user.service'
 import { CreateUserInput, LoginUserInput } from '../schema/auth.schema'
 import jwt from 'jsonwebtoken'
 
 export const createUserController = async (req: Request<{}, {}, CreateUserInput['body']>, res: Response) => {
     try {
 
-        const userData = await createUserService(req.body)
+        const userData = await userService.createUser(req.body)
 
         return res.status(201).json({ status: 'success', message: '',  data: { ...userData } })
     } catch (err: any) {
@@ -21,9 +21,9 @@ export const createUserController = async (req: Request<{}, {}, CreateUserInput[
 const ACCESS_TOKEN_EXPIRATION = 15 * 60 * 1000
 
 export const loginController = async (req: Request<{}, {}, LoginUserInput['body']>, res: Response) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await validatePassword({ username, password })
+    const user = await userService.validatePassword({ email, password })
 
     if (user) {
 
