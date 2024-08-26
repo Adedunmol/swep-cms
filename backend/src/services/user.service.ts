@@ -8,10 +8,8 @@ class UserService {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
     
-        // return userModel.createUser({ email, username, password: hashedPassword })
-        return {}
+        return userModel.createUser({ email, username, password: hashedPassword })
     }
-    
     
     async validatePassword({ password, email }: { email: string, password: string }) {
         const user = await userModel.findUser(email)
