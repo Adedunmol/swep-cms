@@ -23,6 +23,12 @@ class Appointment {
 
         return appointment[0]
     }
+
+    async findAllAppointments() {
+        const appointment = await db('appointment').where({})
+
+        return appointment
+    }
 }
 
 export default new Appointment()
