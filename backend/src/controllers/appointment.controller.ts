@@ -4,7 +4,8 @@ import appointmentService from "../services/appointment.service";
 
 export const createAppointmentController = async (req: Request<{}, {}, CreateAppointmentInput["body"]>, res: Response) => {
     try {
-        const appointment = await appointmentService.createAppointment(req.body)
+        // @ts-ignore
+        const appointment = await appointmentService.createAppointment({ ...req.body, userId: req.user.id})
 
         return res.status(201).json({ status: 'success', message: 'appointment created successfully', data: { appointment } })
     } catch {

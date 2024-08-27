@@ -30,7 +30,7 @@ export const loginController = async (req: Request<{}, {}, LoginUserInput['body'
         const accessToken = jwt.sign(
             {
                 UserInfo: {
-                    // id: user.id,
+                    id: user.id,
                 }
             },
             process.env.ACCESS_TOKEN_SECRET as string,
