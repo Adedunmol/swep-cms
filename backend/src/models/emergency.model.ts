@@ -11,7 +11,7 @@ interface CreateEmergency {
 
 class Emergency {
     async createEmergency(data: CreateEmergency) {
-        const [id] = await db('emergency').insert({
+        const [id] = await db('emergencies').insert({
             ...data
         }).returning('id')
 
@@ -19,13 +19,13 @@ class Emergency {
     }
 
     async findEmergency(id: string) {
-        const emergency = await db('emergency').where({ id })
+        const emergency = await db('emergencies').where({ id })
 
         return emergency[0]
     }
 
     async findAllEmergencies() {
-        const emergency = await db('emergency').where({})
+        const emergency = await db('emergencies').where({})
 
         return emergency
     }

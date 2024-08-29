@@ -11,7 +11,7 @@ interface CreateAppointment {
 
 class Appointment {
     async createAppointment(data: CreateAppointment) {
-        const [id] = await db('appointment').insert({
+        const [id] = await db('appointments').insert({
             ...data
         }).returning('id')
 
@@ -19,13 +19,13 @@ class Appointment {
     }
 
     async findAppointment(id: string) {
-        const appointment = await db('appointment').where({ id })
+        const appointment = await db('appointments').where({ id })
 
         return appointment[0]
     }
 
     async findAllAppointments() {
-        const appointment = await db('appointment').where({})
+        const appointment = await db('appointments').where({})
 
         return appointment
     }
