@@ -2,9 +2,11 @@ import db from "../database/database";
 
 interface CreateUser {
     email: string
-    username: string
+    firstName: string
+    lastName: string
     password: string
-    phoneNumber: string
+    role: string
+    // phoneNumber: string
 }
 
 class User {

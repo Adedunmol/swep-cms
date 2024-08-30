@@ -25,6 +25,7 @@ export async function up(knex: Knex): Promise<void> {
         table.boolean('first_aid').nullable()
         table.boolean('online_med').nullable()
         table.boolean('ambulance').nullable()
+        table.integer('priority').nullable().checkBetween([1, 3])
     })
 }
 

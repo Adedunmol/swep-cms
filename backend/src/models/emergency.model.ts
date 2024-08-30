@@ -7,6 +7,7 @@ interface CreateEmergency {
     firstAid?: boolean
     onlineMed?: boolean
     ambulance?: boolean
+    priority?: number
 }
 
 class Emergency {
