@@ -5,7 +5,8 @@ import { createUserSchema, loginUserSchema } from '../schema/user.schema';
 
 const router = Router()
 
-router.route('/register').post(validateResource(createUserSchema), createUserController)
+router.route('/students/register').post(validateResource(createUserSchema), createUserController)
+router.route('/staff/register').post(validateResource(createUserSchema), createUserController)
 router.route('/login').post(validateResource(loginUserSchema), loginController)
 
 export default router
