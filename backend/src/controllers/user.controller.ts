@@ -5,8 +5,9 @@ import jwt from 'jsonwebtoken'
 
 export const createUserController = async (req: Request<{}, {}, CreateUserInput['body']>, res: Response) => {
     try {
+        const role = req.baseUrl.includes('students') ? 'students' : req.body.role
 
-        const userData = await userService.createUser(req.body)
+        const userData = await userService.createUser({ ...req.body, role })
 
         return res.status(201).json({ status: 'success', message: '',  data: { ...userData } })
     } catch (err: any) {
