@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 export const createUserController = async (req: Request<{}, {}, CreateUserInput['body']>, res: Response) => {
     try {
-        const role = req.baseUrl.includes('students') ? 'students' : req.body.role
+        const role = req.baseUrl.includes('students') && req.body.email.includes('student') ? 'students' : req.body.role
 
         const userData = await userService.createUser({ ...req.body, role })
 
