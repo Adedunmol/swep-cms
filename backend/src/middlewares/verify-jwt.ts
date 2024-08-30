@@ -18,6 +18,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
 
         const dataObj = {
             id: decodedData.UserInfo.id,
+            role: decodedData.UserInfo.role
         }
 
         // @ts-ignore
