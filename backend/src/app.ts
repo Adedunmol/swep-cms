@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import userRouter from "./routes/user.route"
+import verifyJWT from "./middlewares/verify-jwt"
 
 const app = express()
 
@@ -16,6 +17,8 @@ app.get("/", (req, res) => {
 })
 
 app.use(`${API_VERSION}/users`, userRouter)
+
+app.use(verifyJWT)
 app.use(`${API_VERSION}/appointments`, userRouter)
 app.use(`${API_VERSION}/emergencies`, userRouter)
 
