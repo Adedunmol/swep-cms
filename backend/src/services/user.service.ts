@@ -3,7 +3,7 @@ import userModel from '../models/user.model'
 
 class UserService {
     async createUser(data: any) {
-        const { email, firstName, lastName, password, role } = data.body
+        const { email, firstName, lastName, password, role } = data
     
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)

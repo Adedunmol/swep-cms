@@ -1,4 +1,4 @@
-import db from "../database/database";
+import db from "../database";
 
 interface CreateUser {
     email: string
@@ -11,11 +11,17 @@ interface CreateUser {
 
 class User {
     async createUser(data: CreateUser) {
-        const [id] = await db('users').insert({
-            ...data
-        }).returning('id')
+        const [user] = await db('users').returning(['id', 'first_name', 'last_name', 'email']).insert({
+            email: data.email,
+            first_name: data.firstName,
+            last_name: data.lastName,
+            password: data.password,
+            role: data.role
+        })
 
-        return { userId: id }
+        const updatedUser: any = user
+
+        return { ...updatedUser }
     }
 
     async findUser(email: string) {

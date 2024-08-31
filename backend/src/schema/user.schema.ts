@@ -1,4 +1,4 @@
-import { object, string, TypeOf } from "zod";
+import { object, string, TypeOf, input } from "zod";
 
 export const createUserSchema = object({
     body: object({
@@ -22,4 +22,4 @@ export const loginUserSchema = object({
 })
 
 export type LoginUserInput = TypeOf<typeof loginUserSchema>
-export type CreateUserInput = TypeOf<typeof createUserSchema>;
+export type CreateUserInput = input<typeof createUserSchema>;
