@@ -1,21 +1,24 @@
 import { Response, Request } from 'express'
 import userService from '../services/user.service'
-import { CreateUserInput, LoginUserInput } from '../schema/user.schema'
+import { CreateUserInput, LoginUserInput, createUserSchema } from '../schema/user.schema'
 import jwt from 'jsonwebtoken'
 
 export const createUserController = async (req: Request<{}, {}, CreateUserInput['body']>, res: Response) => {
     try {
-        const role = req.baseUrl.includes('students') && req.body.email.includes('student') ? 'students' : req.body.role
+        const result = createUserSchema.parse({ body: req.body })
 
-        const userData = await userService.createUser({ ...req.body, role })
+        const role = result.body.email.includes('student') ? 'student' : result.body.role
+
+        const userData = await userService.createUser({ ...result.body, role })
 
         return res.status(201).json({ status: 'success', message: '',  data: { ...userData } })
     } catch (err: any) {
+        console.log(err)
 
-        if (err && err.code === 'ER_DUP_ENTRY') {
+        if (err && err.code === '23505') {
             return res.status(409).json({ status: 'error', message: 'duplicate value entered', data: null })
         }
-        return res.status(400).json({ status: 'error', message: 'error creating user', data: null })
+        return res.status(400).json({ status: 'error', message: 'error creating user', data: err.issues })
     }
 }
 
