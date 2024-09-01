@@ -10,10 +10,15 @@ interface CreateEmergency {
     priority?: number
 }
 
+type priority = 1 | 2 | 3
+
 class Emergency {
     async createEmergency(data: CreateEmergency) {
         const [id] = await db('emergencies').insert({
-            ...data
+            ...data,
+            first_aid: data.firstAid,
+            online_med: data.onlineMed,
+            priority: +data.priority!!
         }).returning('id')
 
         return { emergencyId: id }
@@ -26,9 +31,15 @@ class Emergency {
     }
 
     async findAllEmergencies() {
-        const emergency = await db('emergencies').where({})
+        const emergency = await db('emergencies').where({}).orderBy('created_at', 'desc').orderBy('priority', 'desc')
 
         return emergency
+    }
+
+    async updateEmergency(id: string, data: priority) {
+        const updatedEmergency = await db('emergencies').returning(['id', 'name', 'priority']).where({ id }).update('priority', 'desc')
+
+        return updatedEmergency
     }
 }
 

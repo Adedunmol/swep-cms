@@ -1,4 +1,4 @@
-import { object, string, TypeOf, boolean, number } from "zod";
+import { object, string, TypeOf, boolean, enum as enum_, number } from "zod";
 
 export const createEmergencySchema = object({
     body: object({
@@ -7,7 +7,8 @@ export const createEmergencySchema = object({
         problem: string({ required_error: "problem is required" }),
         firstAid: boolean().optional(),
         onlineMed: boolean().optional(),
-        ambulance: boolean().optional()
+        ambulance: boolean().optional(),
+        priority: string().optional().default('1')
     })
 })
 
@@ -17,5 +18,15 @@ export const getEmergencySchema = object({
     })
 })
 
+export const updateEmergencySchema = object({
+    params: object({
+        id: string({ required_error: "id is required" })
+    }),
+    body: object({
+        priority: enum_(['1', '2', '3'])
+    })
+})
+
 export type GetEmergencyInput = TypeOf<typeof getEmergencySchema>
 export type CreateEmergencyInput = TypeOf<typeof createEmergencySchema>;
+export type UpdateEmergencyInput = TypeOf<typeof updateEmergencySchema>;
