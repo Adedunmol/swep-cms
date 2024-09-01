@@ -32,3 +32,13 @@ export const getAllEmergenciesController = async (req: Request, res: Response) =
         return res.status(400).json({ status: 'error', message: 'error getting emergencies', data: null })
     }
 }
+
+export const updateEmergencyController = async (req: Request, res: Response) => {
+    try {
+        const emergencies = await emergencyService.getAllEmergencies()
+
+        return res.status(200).json({ status: 'success', message: 'emergencies retrieved successfully', data: { emergencies } })
+    } catch {
+        return res.status(400).json({ status: 'error', message: 'error getting emergencies', data: null })
+    }
+}

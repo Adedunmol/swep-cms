@@ -29,6 +29,17 @@ class User {
 
         return user[0]
     }
+
+    async findDoctors() {
+        const doctors = await db('users').join('appointments', 'users.id', '=', 'appointments.doctor_id')
+                                        .select('users.id', 'appointments.doctor_id', 'first_name', 'last_name', 'email')
+                                        .groupBy('appointments.doctor_id')
+                                        .count('appointments.doctor_id')
+                                        .orderBy('appointments.created_at', 'desc')
+                                        .orderBy('count', 'desc')
+
+        return doctors
+    }
 }
 
 export default new User()
