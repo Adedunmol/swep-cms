@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import userRouter from "./routes/user.route"
+import emergencyRouter from "./routes/emergency.route"
+import appointmentRouter from "./routes/appointment.route"
 import verifyJWT from "./middlewares/verify-jwt"
 
 const app = express()
@@ -19,7 +21,7 @@ app.get("/", (req, res) => {
 app.use(`${API_VERSION}/users`, userRouter)
 
 app.use(verifyJWT)
-app.use(`${API_VERSION}/appointments`, userRouter)
-app.use(`${API_VERSION}/emergencies`, userRouter)
+app.use(`${API_VERSION}/appointments`, appointmentRouter)
+app.use(`${API_VERSION}/emergencies`, emergencyRouter)
 
 export default app

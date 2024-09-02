@@ -7,21 +7,28 @@ interface CreateEmergency {
     firstAid?: boolean
     onlineMed?: boolean
     ambulance?: boolean
-    priority?: number
+    priority?: string
+    userId: number
 }
 
 type priority = 1 | 2 | 3
 
 class Emergency {
     async createEmergency(data: CreateEmergency) {
-        const [id] = await db('emergencies').insert({
-            ...data,
+        const [emergency] = await db('emergencies').returning(['id', 'user_id', 'name', 'problem', 'priority']).insert({
+            name: data.name,
+            address: data.address,
+            ambulance: data.ambulance,
+            problem: data.problem,
             first_aid: data.firstAid,
             online_med: data.onlineMed,
-            priority: +data.priority!!
-        }).returning('id')
+            priority: +data.priority!!,
+            user_id: +data.userId
+        })
 
-        return { emergencyId: id }
+        const updatedEmergency: any = emergency
+
+        return { ...updatedEmergency }
     }
 
     async findEmergency(id: string) {
@@ -31,13 +38,13 @@ class Emergency {
     }
 
     async findAllEmergencies() {
-        const emergency = await db('emergencies').where({}).orderBy('created_at', 'desc').orderBy('priority', 'desc')
+        const emergency = await db('emergencies').where({}).orderBy('created_at', 'asc').orderBy('priority', 'desc')
 
         return emergency
     }
 
     async updateEmergency(id: string, data: priority) {
-        const updatedEmergency = await db('emergencies').returning(['id', 'name', 'priority']).where({ id }).update('priority', 'desc')
+        const updatedEmergency = await db('emergencies').returning(['id', 'name', 'priority', 'problem']).where({ id }).update('priority', +data)
 
         return updatedEmergency
     }

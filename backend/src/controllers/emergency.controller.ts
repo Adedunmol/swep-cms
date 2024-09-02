@@ -9,7 +9,8 @@ export const createEmergencyController = async (req: Request<{}, {}, CreateEmerg
         const emergency = await emergencyService.createEmergency({ ...result.body, userId: req.user.id })
 
         return res.status(201).json({ status: 'success', message: 'emergency created successfully', data: { emergency } })
-    } catch {
+    } catch(err: any) {
+        console.log(err)
         return res.status(400).json({ status: 'error', message: 'error creating emergency', data: null })
     }
 }
@@ -19,7 +20,7 @@ export const getEmergencyController = async (req: Request<GetEmergencyInput["par
         const emergency = await emergencyService.getEmergency(req.params.id)
 
         return res.status(201).json({ status: 'success', message: 'emergency retrieved successfully', data: { emergency } })
-    } catch {
+    } catch(err: any) {
         return res.status(400).json({ status: 'error', message: 'error getting emergencies', data: null })
     }
 }
@@ -29,7 +30,7 @@ export const getAllEmergenciesController = async (req: Request, res: Response) =
         const emergencies = await emergencyService.getAllEmergencies()
 
         return res.status(200).json({ status: 'success', message: 'emergencies retrieved successfully', data: { emergencies } })
-    } catch {
+    } catch(err: any) {
         return res.status(400).json({ status: 'error', message: 'error getting emergencies', data: null })
     }
 }
@@ -39,7 +40,8 @@ export const updateEmergencyController = async (req: Request<UpdateEmergencyInpu
         const emergency = await emergencyService.updateEmergency(req.params.id, req.body.priority)
 
         return res.status(200).json({ status: 'success', message: 'emergencies updated successfully', data: { emergency } })
-    } catch {
+    } catch(err: any) {
+        console.log(err)
         return res.status(400).json({ status: 'error', message: 'error updating emergencies', data: null })
     }
 }
