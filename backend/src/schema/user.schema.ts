@@ -1,4 +1,4 @@
-import { object, string, TypeOf, input } from "zod";
+import { object, string, TypeOf, input, enum as enum_ } from "zod";
 
 export const createUserSchema = object({
     body: object({
@@ -7,7 +7,7 @@ export const createUserSchema = object({
         password: string({ required_error: "password is required" }).min(6, "Password too short - should be 6 chars"),
         passwordConfirmation: string({ required_error: "passwordConfirmation is required" }),
         email: string({ required_error: "email is required" }).email("Not a valid email").refine((e) => e.includes("oauife"), { message: "Not a valid school email", path: ["email"] }),
-        role: string().optional().default("staff")
+        role: enum_(["doctor", "staff"]).optional().default("staff") //string()
     }).refine((data) => data.password === data.passwordConfirmation, {
         message: "Passwords do not match",
         path: ["passwordConfirmation"]
