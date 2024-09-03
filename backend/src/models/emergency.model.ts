@@ -38,7 +38,7 @@ class Emergency {
     }
 
     async findAllEmergencies() {
-        const emergency = await db('emergencies').where({}).orderBy('created_at', 'asc').orderBy('priority', 'desc')
+        const emergency = await db('emergencies').where({ attended_to: false }).orderBy('created_at', 'asc').orderBy('priority', 'desc')
 
         return emergency
     }

@@ -25,7 +25,7 @@ class Appointment {
     }
 
     async findAllAppointments() {
-        const appointment = await db('appointments').where({})
+        const appointment = await db('appointments').where({ attended_to: false }).orderBy('created_at', 'asc').orderBy('priority', 'desc')
 
         return appointment
     }
