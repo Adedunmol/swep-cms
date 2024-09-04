@@ -16,6 +16,11 @@ class AppointmentService {
 
         return appointmentModel.findAllAppointments()
     }
+
+    async getDoctorAppointments(doctorId: string) {
+
+        return appointmentModel.findAllAppointments(doctorId)
+    }
 }
 
 export default new AppointmentService()

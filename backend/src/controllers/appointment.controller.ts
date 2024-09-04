@@ -29,7 +29,18 @@ export const getAllAppointmentsController = async (req: Request, res: Response) 
     try {
         const appointments = await appointmentService.getAllAppointments()
 
-        return res.status(200).json({ status: 'success', message: 'emergencies retrieved successfully', data: appointments })
+        return res.status(200).json({ status: 'success', message: 'appointments retrieved successfully', data: appointments })
+    } catch(err: any) {
+        return res.status(400).json({ status: 'error', message: 'error retrieving appointments', data: null })
+    }
+}
+
+export const getDoctorAppointmentsController = async (req: Request, res: Response) => {
+    try {
+        // @ts-ignore
+        const appointments = await appointmentService.getAllAppointments(req.user.id)
+
+        return res.status(200).json({ status: 'success', message: 'appointments retrieved successfully', data: appointments })
     } catch(err: any) {
         return res.status(400).json({ status: 'error', message: 'error retrieving appointments', data: null })
     }

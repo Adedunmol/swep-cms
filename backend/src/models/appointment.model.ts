@@ -35,8 +35,14 @@ class Appointment {
         return appointment[0]
     }
 
-    async findAllAppointments() {
-        const appointment = await db('appointments').where({ attended_to: false }).orderBy('created_at', 'asc')
+    async findAllAppointments(doctorId?: string) {
+        let appointment: any[]
+
+        if (!doctorId) {
+            appointment = await db('appointments').where({ attended_to: false }).orderBy('created_at', 'asc')
+        } else {
+            appointment = await db('appointments').where({ attended_to: false }).andWhere({ doctor_id: doctorId }).orderBy('created_at', 'asc')
+        }
 
         return appointment
     }
