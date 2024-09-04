@@ -47,3 +47,14 @@ export const loginController = async (req: Request<{}, {}, LoginUserInput['body'
 
     return res.status(401).json({ status: 'error', message: 'Invalid credentials', data: null })
 }
+
+export const getAllDoctorsController = async (req: Request, res: Response) => {
+    try {
+        const doctors = await userService.getAllDoctors()
+
+        return res.status(200).json({ status: 'success', message: 'doctors retrieved successfully', data: { doctors } })
+    } catch (err: any) {
+        console.log(err)
+        return res.status(500).json({ status: 'error', message: 'internal server error', data: null })
+    }
+}

@@ -22,6 +22,11 @@ class UserService {
             
         return user
     }
+
+    async getAllDoctors() {
+
+        return userModel.findDoctors()
+    }
 }
 
 export default new UserService()

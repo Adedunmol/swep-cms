@@ -7,15 +7,26 @@ interface CreateAppointment {
     availableDay: string
     availableMonth: string
     reason: string
+    userId: string
 }
 
 class Appointment {
     async createAppointment(data: CreateAppointment) {
-        const [id] = await db('appointments').insert({
-            ...data
-        }).returning('id')
+        const [appointment] = await db('appointments')
+            .returning(['id', 'doctor_id', 'email', 'phone_number', 'available_day', 'available_month'])
+            .insert({
+            doctor_id: data.doctorId,
+            email: data.email,
+            phone_number: data.phoneNumber,
+            available_day: data.availableDay,
+            available_month: data.availableMonth,
+            reason: data.reason,
+            user_id: data.userId
+        })
 
-        return { appointmentId: id }
+        const updatedAppointment: any = appointment
+
+        return { ...updatedAppointment }
     }
 
     async findAppointment(id: string) {
@@ -25,7 +36,7 @@ class Appointment {
     }
 
     async findAllAppointments() {
-        const appointment = await db('appointments').where({ attended_to: false }).orderBy('created_at', 'asc').orderBy('priority', 'desc')
+        const appointment = await db('appointments').where({ attended_to: false }).orderBy('created_at', 'asc')
 
         return appointment
     }

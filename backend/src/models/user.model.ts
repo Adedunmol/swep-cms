@@ -31,13 +31,12 @@ class User {
     }
 
     async findDoctors() {
-        const doctors = await db('users').join('appointments', 'users.id', '=', 'appointments.doctor_id')
-                                        .select('users.id', 'appointments.doctor_id', 'first_name', 'last_name', 'email')
-                                        .groupBy('appointments.doctor_id')
-                                        .count('appointments.doctor_id')
-                                        .orderBy('appointments.created_at', 'desc')
-                                        .orderBy('count', 'desc')
-
+        const doctors = await db('users').select('users.id', 'users.email', 'users.first_name', 'users.last_name')
+                                        .leftJoin('appointments', 'users.id', '=', 'appointments.doctor_id')
+                                        .where({ role: 'doctor' })
+                                        .groupBy('users.id')
+                                        .count('appointments.doctor_id as appointment_count')
+                                        .orderBy('appointment_count', 'asc')
         return doctors
     }
 }
