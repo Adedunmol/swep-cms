@@ -11,7 +11,7 @@ const validateResource = (schema: AnyZodObject) => {
             })
             next()
         }catch (err: any) {
-            return res.status(400).send(err.issues)
+            return res.status(400).json({ status: "error", message: "invalid schema", data: { ...err.issues[0] } })
         }
     
     }
