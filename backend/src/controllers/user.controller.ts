@@ -39,7 +39,7 @@ export const loginController = async (req: Request<{}, {}, LoginUserInput['body'
                 }
             },
             process.env.ACCESS_TOKEN_SECRET as string,
-            { expiresIn: '15m' }
+            // { expiresIn: '15m' }
         )
 
         return res.status(200).json({ status: 'success', message: '', data: { accessToken, expiresIn: ACCESS_TOKEN_EXPIRATION }})
