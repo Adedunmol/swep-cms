@@ -35,7 +35,10 @@ export const loginController = async (req: Request<{}, {}, LoginUserInput['body'
             {
                 UserInfo: {
                     id: user.id,
-                    role: user.role
+                    role: user.role,
+                    email: user.email,
+                    firstName: user.first_name,
+                    lastName: user.last_name
                 }
             },
             process.env.ACCESS_TOKEN_SECRET as string,
