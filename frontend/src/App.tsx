@@ -26,7 +26,7 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer />
-
+      <Route element={<Landing />} path="/" />
       {user ? (
         <Routes>
           <Route element={<Dashboard />} path="/dashboard" />
@@ -36,7 +36,6 @@ function App() {
         </Routes>
       ) : (
         <Routes>
-          <Route element={<Landing />} path="/" />
           <Route element={<Login />} path="/login" />
           <Route element={<Signup />} path="/sign-up" />
         </Routes>
