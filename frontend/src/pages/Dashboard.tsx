@@ -1,9 +1,9 @@
+import { FaRegUser } from 'react-icons/fa6'
+import { FiPhoneCall } from 'react-icons/fi'
+import { LuCalendarClock } from 'react-icons/lu'
 import { Link } from 'react-router-dom'
 import landingBg from '../assets/landing-bg.png'
 import oauLogo from '../assets/oau-logo.png'
-import { FaRegUser } from 'react-icons/fa6'
-import { LuCalendarClock } from 'react-icons/lu'
-import { FiPhoneCall } from 'react-icons/fi'
 
 const Dashboard = () => {
     return (

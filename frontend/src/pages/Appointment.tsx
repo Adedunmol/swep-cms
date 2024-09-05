@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import landingBg from '../assets/landing-bg.png'
 import oauLogo from '../assets/oau-logo.png'
-import useAuthStore from '../stores/useAuthStore'
 
 const Appointment = () => {
     const [email, setEmail] = useState('')
@@ -11,18 +10,15 @@ const Appointment = () => {
     const [reason, setReason] = useState('')
     const [date, setDate] = useState('')
 
-    const [submitting, setSubmitting] = useState(false)
-
-    const { authenticate } = useAuthStore()
 
     const handleSubmit = async (e: FormEvent) => {
         try {
             e.preventDefault()
-            setSubmitting(true)
+            // setSubmitting(true)
         } catch (error: any) {
             toast.error(error?.message || error)
         } finally {
-            setSubmitting(false)
+            // setSubmitting(false)
         }
     }
 

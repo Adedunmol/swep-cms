@@ -1,28 +1,27 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent } from 'react'
+import { IoMdNotificationsOutline } from 'react-icons/io'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import landingBg from '../assets/landing-bg.png'
 import oauLogo from '../assets/oau-logo.png'
-import useAuthStore from '../stores/useAuthStore'
-import { Link } from 'react-router-dom'
-import { IoMdNotificationsOutline } from 'react-icons/io'
 
 const Reception = () => {
-    const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
-    const [problem, setProblem] = useState('')
+    // const [name, setName] = useState('')
+    // const [address, setAddress] = useState('')
+    // const [problem, setProblem] = useState('')
 
-    const [submitting, setSubmitting] = useState(false)
+    // const [submitting, setSubmitting] = useState(false)
 
-    const { authenticate } = useAuthStore()
+    // const { authenticate } = useAuthStore()
 
     const handleSubmit = async (e: FormEvent) => {
         try {
             e.preventDefault()
-            setSubmitting(true)
+            // setSubmitting(true)
         } catch (error: any) {
             toast.error(error?.message || error)
         } finally {
-            setSubmitting(false)
+            // setSubmitting(false)
         }
     }
 
