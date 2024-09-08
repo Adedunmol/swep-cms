@@ -2,11 +2,9 @@ import db from "../database";
 
 interface CreateAppointment {
     doctorId: string
-    email: string
-    phoneNumber: string
-    availableDay: string
-    availableMonth: string
-    reason: string
+    date: Date
+    startTime: string
+    endTime: string
     userId: string
 }
 
@@ -16,11 +14,9 @@ class Appointment {
             .returning(['id', 'doctor_id', 'email', 'phone_number', 'available_day', 'available_month'])
             .insert({
             doctor_id: data.doctorId,
-            email: data.email,
-            phone_number: data.phoneNumber,
-            available_day: data.availableDay,
-            available_month: data.availableMonth,
-            reason: data.reason,
+            date: data.date,
+            start_time: data.startTime,
+            end_time: data.endTime,
             user_id: data.userId
         })
 
@@ -45,6 +41,17 @@ class Appointment {
         }
 
         return appointment
+    }
+
+    async fetchOverlaps(doctorId: number, date: string, startTime: string, endTime: string) {
+        const appointments = await db('appointments')
+                                    .where('doctorId', doctorId)
+                                    .where('date', date)
+                                    .where(function () {
+                                    this.where('startTime', '<', endTime).andWhere('endTime', '>', startTime);
+                                });
+
+        return appointments
     }
 }
 

@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import userRouter from "./routes/user.route"
+import rosterRouter from "./routes/roster.route"
+import doctorRouter from "./routes/doctor.route"
 import emergencyRouter from "./routes/emergency.route"
 import appointmentRouter from "./routes/appointment.route"
 import verifyJWT from "./middlewares/verify-jwt"
@@ -19,9 +21,10 @@ app.get("/", (req, res) => {
 })
 
 app.use(`${API_VERSION}/users`, userRouter)
+app.use(`${API_VERSION}/doctors`, doctorRouter);
+app.use(`${API_VERSION}/rosters`, rosterRouter);
 
 app.use(verifyJWT)
 app.use(`${API_VERSION}/appointments`, appointmentRouter)
-app.use(`${API_VERSION}/emergencies`, emergencyRouter)
 
 export default app
