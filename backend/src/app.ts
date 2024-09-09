@@ -4,9 +4,7 @@ import cookieParser from "cookie-parser"
 import userRouter from "./routes/user.route"
 import rosterRouter from "./routes/roster.route"
 import doctorRouter from "./routes/doctor.route"
-import emergencyRouter from "./routes/emergency.route"
 import appointmentRouter from "./routes/appointment.route"
-import verifyJWT from "./middlewares/verify-jwt"
 
 const app = express()
 

@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { isValidDate, isValidTime } from './date-util';
 
 export function validateAppointmentInput(req: Request, res: Response, next: NextFunction) {
-    const { userId, date, startTime, endTime, shift } = req.body;
+    const { userId, date, shift, reason } = req.body;
 
-    if (!userId || !date || !shift) {
+    if (!userId || !date || !shift || !reason) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 

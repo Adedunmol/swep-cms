@@ -6,6 +6,7 @@ interface CreateAppointment {
     startTime: string
     endTime: string
     userId: string
+    reason: string
 }
 
 class Appointment {
@@ -17,7 +18,8 @@ class Appointment {
             date: data.date,
             start_time: data.startTime,
             end_time: data.endTime,
-            user_id: data.userId
+            user_id: data.userId,
+            reason: data.reason
         })
 
         const updatedAppointment: any = appointment

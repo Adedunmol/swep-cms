@@ -14,7 +14,7 @@ type Shifts = 'morning' | 'afternoon' | 'evening'
 class AppointmentController {
     async bookAppointment(req: Request, res: Response) {
         try {
-            const { userId, date, startTime, endTime, shift } = req.body;
+            const { userId, date, reason, shift } = req.body;
 
             const doctors = await Doctor.findDoctorsWithLeastAppointments()
 
@@ -35,6 +35,7 @@ class AppointmentController {
                         date,
                         startTime: slot.start,
                         endTime: slot.end,
+                        reason
                     });
 
                     // Send notifications

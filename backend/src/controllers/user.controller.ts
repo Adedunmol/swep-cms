@@ -7,8 +7,9 @@ export const createUserController = async (req: Request<{}, {}, CreateUserInput[
     try {
         const result = createUserSchema.parse({ body: req.body })
 
-        const role = result.body.email.includes('student') ? 'student' : result.body.role
+        // const role = result.body.email.includes('student') ? 'student' : result.body.role
 
+        const role = 'patient'
         const userData = await userService.createUser({ ...result.body, role })
 
         return res.status(201).json({ status: 'success', message: '',  data: { ...userData } })
