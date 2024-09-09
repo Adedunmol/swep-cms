@@ -17,7 +17,7 @@ class AppointmentController {
             const { userId, date, reason, shift } = req.body;
 
             const doctors = await Doctor.findDoctorsWithLeastAppointments()
-            console.log("doctors: ", doctors)
+
             const leastAppointedDoctor = doctors[0]
 
             // Check if the doctor is available (scheduled and not blocked)

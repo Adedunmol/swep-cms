@@ -4,10 +4,10 @@ interface UpdateRecord {
     age?: number
     bloodType?: string
     genotype?: string
-    password?: string
     criticalIllness?: string,
     physicalDisabilities?: string
     emergencyPhoneNumber?: string
+    substanceUse?: string
     userId: string
 }
 
@@ -21,16 +21,20 @@ class Record {
     }
 
     async updateRecord(data: UpdateRecord) {
-        const record = await db('records')
+        const record: any = await db('records')
             .returning('*')
-            .where({ user_id: data.userId })
+            .where('user_id', data.userId )
             .update({
-            age: data.age,
-            blood_type: data.bloodType,
-            genotype: data.genotype,
-        })
+                age: data.age,
+                blood_type: data.bloodType,
+                genotype: data.genotype,
+                critical_illness: data.criticalIllness,
+                physical_disabilities: data.physicalDisabilities,
+                emergency_phone_number: data.emergencyPhoneNumber,
+                substance_use: data.substanceUse
+            })
 
-        const updatedRecord: any = record
+        const updatedRecord: any = record[0]
 
         return { ...updatedRecord }
     }
