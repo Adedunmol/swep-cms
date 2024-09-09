@@ -10,7 +10,7 @@ interface CreateDoctor {
 class Doctor{
     async createDoctor(data: CreateDoctor) {
         const [doctor] = await db('doctors')
-            .returning(['id', 'name', 'email', 'phone_number'])
+            .returning('*')
             .insert({
             email: data.email,
             office_number: data.officeNumber,
