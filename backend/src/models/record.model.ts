@@ -5,13 +5,23 @@ interface UpdateRecord {
     bloodType?: string
     genotype?: string
     password?: string
+    userId: string
 }
 
 class Record {
-    async updateRecord(data: UpdateRecord) {
+    async createRecord(userId: string) {
         const [record] = await db('records')
+        .returning('*')
+        .insert({
+            user_id: userId
+        })
+    }
+
+    async updateRecord(data: UpdateRecord) {
+        const record = await db('records')
             .returning('*')
-            .insert({
+            .where({ user_id: data.userId })
+            .update({
             age: data.age,
             blood_type: data.bloodType,
             genotype: data.genotype,

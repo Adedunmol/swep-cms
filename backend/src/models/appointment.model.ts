@@ -26,7 +26,7 @@ class Appointment {
     }
 
     async findAppointment(id: string) {
-        const appointment = await db('appointments').where({ id })
+        const appointment = await db('appointments').select('*').join('records', 'appointments.userid', '=', 'records.user_id').where({ id })
 
         return appointment[0]
     }

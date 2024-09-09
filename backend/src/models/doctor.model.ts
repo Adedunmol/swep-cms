@@ -3,7 +3,7 @@ import db from "../database";
 interface CreateDoctor {
     name: string
     email: string
-    phoneNumber: string
+    officeNumber: string
     password?: string
 }
 
@@ -13,7 +13,7 @@ class Doctor{
             .returning(['id', 'name', 'email', 'phone_number'])
             .insert({
             email: data.email,
-            phone_number: data.phoneNumber,
+            phone_number: data.officeNumber, // modify column
             name: data.name,
             password: data.password
         })

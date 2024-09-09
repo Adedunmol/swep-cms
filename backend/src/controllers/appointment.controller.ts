@@ -7,11 +7,14 @@ import EmailService from '../services/email.service';
 // import SMSService from '../services/sms.service';
 import PDFService from '../services/pdf.service';
 import Roster from "../models/roster.model";
+import { shifts } from "../utils/shifts";
+
+type Shifts = 'morning' | 'afternoon' | 'evening'
 
 class AppointmentController {
     async bookAppointment(req: Request, res: Response) {
         try {
-            const { userId, date, startTime, endTime } = req.body;
+            const { userId, date, startTime, endTime, shift } = req.body;
 
             const doctors = await Doctor.findDoctorsWithLeastAppointments()
 
@@ -19,36 +22,39 @@ class AppointmentController {
 
             // Check if the doctor is available (scheduled and not blocked)
             // const isAvailable = await AppointmentController.checkAvailability(doctorId, date, startTime, endTime);
-            const isAvailable = await AppointmentController.checkAvailability(leastAppointedDoctor.id as number, date, startTime, endTime);
-            if (!isAvailable) {
-                return res.status(400).json({ error: 'Time slot not available' });
+
+            for (const slot of shifts[shift as Shifts]) {
+                const isAvailable = await AppointmentController.checkAvailability(leastAppointedDoctor.id as number, date, slot.start, slot.end);
+
+                if (isAvailable) {
+                    // Create appointment
+                    const appointment = await Appointment.createAppointment({
+                        userId,
+                        // doctorId,
+                        doctorId: leastAppointedDoctor.id as string,
+                        date,
+                        startTime: slot.start,
+                        endTime: slot.end,
+                    });
+
+                    // Send notifications
+                    // const doctor = await Doctor.findDoctor(doctorId);
+                    const doctor = await Doctor.findDoctor(leastAppointedDoctor.id as string);
+                    if (!doctor) {
+                        return res.status(400).json({ error: 'doctor not found' });
+                    }
+                    await EmailService.sendAppointmentNotification(doctor.email, appointment);
+                    // await SMSService.sendAppointmentNotification(doctor.phoneNumber, appointment);
+
+                    // Generate and send PDF
+                    const pdf = await PDFService.generateAppointmentPDF(appointment);
+                    await EmailService.sendAppointmentPDF(doctor.email, pdf);
+                    // TODO: Send PDF to user's email as well
+
+                    return res.status(201).json({ status: 'success', data: appointment });
+                }
             }
-
-            // Create appointment
-            const appointment = await Appointment.createAppointment({
-                userId,
-                // doctorId,
-                doctorId: leastAppointedDoctor.id as string,
-                date,
-                startTime,
-                endTime,
-            });
-
-            // Send notifications
-            // const doctor = await Doctor.findDoctor(doctorId);
-            const doctor = await Doctor.findDoctor(leastAppointedDoctor.id as string);
-            if (!doctor) {
-                return res.status(400).json({ error: 'doctor not found' });
-            }
-            await EmailService.sendAppointmentNotification(doctor.email, appointment);
-            // await SMSService.sendAppointmentNotification(doctor.phoneNumber, appointment);
-
-            // Generate and send PDF
-            const pdf = await PDFService.generateAppointmentPDF(appointment);
-            await EmailService.sendAppointmentPDF(doctor.email, pdf);
-            // TODO: Send PDF to user's email as well
-
-            res.status(201).json({ status: 'success', data: appointment });
+            return res.status(400).json({ error: 'Time slot not available' });
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Failed to book appointment' });
@@ -58,9 +64,19 @@ class AppointmentController {
     async getUserAppointments(req: Request, res: Response) {
         try {
             //@ts-ignore
-            console.log(req.user.id)
-            //@ts-ignore
             const appointments = await Appointment.findUserAppointments(req.user.id)
+
+            return res.status(200).json({ status: 'success', data: appointments })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Failed to retrieve appointments' });
+        }
+    }
+
+    async getAppointment(req: Request, res: Response) {
+        try {
+            //@ts-ignore
+            const appointments = await Appointment.findAppointment(req.user.id)
 
             return res.status(200).json({ status: 'success', data: appointments })
         } catch (error) {

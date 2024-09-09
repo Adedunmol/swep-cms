@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { isValidDate, isValidTime } from './date-util';
 
 export function validateAppointmentInput(req: Request, res: Response, next: NextFunction) {
-    const { userId, date, startTime, endTime } = req.body;
+    const { userId, date, startTime, endTime, shift } = req.body;
 
-    if (!userId || !date || !startTime || !endTime) {
+    if (!userId || !date || !shift) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -12,8 +12,12 @@ export function validateAppointmentInput(req: Request, res: Response, next: Next
         return res.status(400).json({ error: 'Invalid date format' });
     }
 
-    if (!isValidTime(startTime) || !isValidTime(endTime)) {
-        return res.status(400).json({ error: 'Invalid time format' });
+    // if (!isValidTime(startTime) || !isValidTime(endTime)) {
+    //     return res.status(400).json({ error: 'Invalid time format' });
+    // }
+
+    if (!['morning', 'afternoon', 'night'].includes(shift)) {
+        return res.status(400).json({ error: 'Invalid shift value' });
     }
 
     next();
