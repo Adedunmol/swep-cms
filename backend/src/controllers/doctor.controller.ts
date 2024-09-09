@@ -67,7 +67,7 @@ class DoctorController {
             const salt = await bcrypt.genSalt(10)
             const password = await bcrypt.hash(req.body.password, salt)
             
-            const doctor = await Doctor.createDoctor({ name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, password });
+            const doctor = await Doctor.createDoctor({ name: req.body.name, email: req.body.email, officeNumber: req.body.officeNumber, password });
             res.status(201).json({ status: 'success', data: doctor });
         } catch (error) {
             res.status(500).json({ error: 'Failed to create doctor' });
