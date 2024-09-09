@@ -26,6 +26,7 @@ class RosterController {
 
     async updateRoster(req: Request<UpdateRosterInput['params'], {}, UpdateRosterInput['body']>, res: Response) {
         try {
+            if (Object.keys(req.body).length == 0) return res.sendStatus(200)
             const { id } = req.params;
             const updatedRoster = await Roster.updateRoster(id, req.body);
             if (updatedRoster) {
@@ -34,7 +35,6 @@ class RosterController {
                 res.status(404).json({ error: 'Roster not found' });
             }
         } catch (error) {
-            console.log(error)
             res.status(500).json({ error: 'Failed to update roster' });
         }
     }

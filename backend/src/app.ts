@@ -24,7 +24,7 @@ app.use(`${API_VERSION}/users`, userRouter)
 app.use(`${API_VERSION}/doctors`, doctorRouter);
 app.use(`${API_VERSION}/rosters`, rosterRouter);
 
-app.use(verifyJWT)
+// app.use(verifyJWT)
 app.use(`${API_VERSION}/appointments`, appointmentRouter)
 
 export default app

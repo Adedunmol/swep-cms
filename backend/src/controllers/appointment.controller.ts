@@ -11,10 +11,15 @@ import Roster from "../models/roster.model";
 class AppointmentController {
     async bookAppointment(req: Request, res: Response) {
         try {
-            const { userId, doctorId, date, startTime, endTime } = req.body;
+            const { userId, date, startTime, endTime } = req.body;
+
+            const doctors = await Doctor.findDoctorsWithLeastAppointments()
+
+            const leastAppointedDoctor = doctors[0]
 
             // Check if the doctor is available (scheduled and not blocked)
-            const isAvailable = await this.checkAvailability(doctorId, date, startTime, endTime);
+            // const isAvailable = await AppointmentController.checkAvailability(doctorId, date, startTime, endTime);
+            const isAvailable = await AppointmentController.checkAvailability(leastAppointedDoctor.id as number, date, startTime, endTime);
             if (!isAvailable) {
                 return res.status(400).json({ error: 'Time slot not available' });
             }
@@ -22,14 +27,16 @@ class AppointmentController {
             // Create appointment
             const appointment = await Appointment.createAppointment({
                 userId,
-                doctorId,
+                // doctorId,
+                doctorId: leastAppointedDoctor.id as string,
                 date,
                 startTime,
                 endTime,
             });
 
             // Send notifications
-            const doctor = await Doctor.findDoctor(doctorId);
+            // const doctor = await Doctor.findDoctor(doctorId);
+            const doctor = await Doctor.findDoctor(leastAppointedDoctor.id as string);
             if (!doctor) {
                 return res.status(400).json({ error: 'doctor not found' });
             }
@@ -41,8 +48,9 @@ class AppointmentController {
             await EmailService.sendAppointmentPDF(doctor.email, pdf);
             // TODO: Send PDF to user's email as well
 
-            res.status(201).json(appointment);
+            res.status(201).json({ status: 'success', data: appointment });
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to book appointment' });
         }
     }
@@ -50,14 +58,15 @@ class AppointmentController {
     async getAvailableTimeSlots(req: Request, res: Response) {
         try {
             const { date } = req.query;
-            const availableSlots = await this.findAvailableTimeSlots(date as string);
+            const availableSlots = await AppointmentController.findAvailableTimeSlots(date as string);
             res.json(availableSlots);
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to retrieve available time slots' });
         }
     }
 
-    private async checkAvailability(doctorId: number, date: string, startTime: string, endTime: string): Promise<boolean> {
+    private static async checkAvailability(doctorId: number, date: string, startTime: string, endTime: string): Promise<boolean> {
         // Check if doctor is scheduled for the given date
         const roster = await Roster.findScheduledDoctorForDate(doctorId, date);
         if (!roster) {
@@ -70,21 +79,20 @@ class AppointmentController {
         return overlappingAppointments.length === 0;
     }
 
-    private async findAvailableTimeSlots(date: string) {
+    private static async findAvailableTimeSlots(date: string) {
         // Get all doctors scheduled for the given date
         const scheduledDoctors = await Roster.fetchScheduledDoctors(date);
 
         const availableSlots = [];
 
         for (const roster of scheduledDoctors) {
-            const doctorId = roster.doctorId;
+            const doctorId = roster.doctor_id;
             const shift = roster.shift;
 
             // Define time slots based on shift
-            const timeSlots = this.getTimeSlotsForShift(shift);
-
+            const timeSlots = AppointmentController.getTimeSlotsForShift(shift);
             for (const slot of timeSlots) {
-                const isAvailable = await this.checkAvailability(doctorId, date, slot.start, slot.end);
+                const isAvailable = await AppointmentController.checkAvailability(doctorId, date, slot.start, slot.end);
                 if (isAvailable) {
                     availableSlots.push({
                         doctorId,
@@ -99,7 +107,7 @@ class AppointmentController {
         return availableSlots;
     }
 
-    private getTimeSlotsForShift(shift: string) {
+    private static getTimeSlotsForShift(shift: string) {
         // Define time slots for each shift (adjust as needed)
         const slots = {
             morning: [

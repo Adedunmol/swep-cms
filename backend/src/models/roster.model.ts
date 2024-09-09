@@ -57,8 +57,7 @@ class Roster{
     }
 
     async findScheduledDoctorForDate(doctorId: number, date: string) {
-        const roster = await db('rosters').where({ doctorId, date }).first()
-
+        const roster = await db('rosters').where({ doctor_id: doctorId }).andWhere({ date }).first()
         return roster
     }
 }
