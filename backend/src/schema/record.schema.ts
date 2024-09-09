@@ -5,6 +5,9 @@ export const updateRecordSchema = object({
         bloodType: string().optional(),
         age: number().optional(),
         genotype: string().optional(),
+        criticalIllness: string().optional(),
+        physicalDisabilities: string().optional(),
+        emergencyPhoneNumber: string().optional()
     })
 })
 

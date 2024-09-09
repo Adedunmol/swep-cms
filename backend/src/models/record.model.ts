@@ -5,6 +5,9 @@ interface UpdateRecord {
     bloodType?: string
     genotype?: string
     password?: string
+    criticalIllness?: string,
+    physicalDisabilities?: string
+    emergencyPhoneNumber?: string
     userId: string
 }
 
