@@ -55,6 +55,20 @@ class AppointmentController {
         }
     }
 
+    async getUserAppointments(req: Request, res: Response) {
+        try {
+            //@ts-ignore
+            console.log(req.user.id)
+            //@ts-ignore
+            const appointments = await Appointment.findUserAppointments(req.user.id)
+
+            return res.status(200).json({ status: 'success', data: appointments })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Failed to retrieve appointments' });
+        }
+    }
+
     async getAvailableTimeSlots(req: Request, res: Response) {
         try {
             const { date } = req.query;
@@ -111,16 +125,22 @@ class AppointmentController {
         // Define time slots for each shift (adjust as needed)
         const slots = {
             morning: [
-                { start: '08:00', end: '10:00' },
-                { start: '10:00', end: '12:00' },
+                { start: '08:00', end: '09:00' },
+                { start: '09:00', end: '10:00' },
+                { start: '10:00', end: '11:00' },
+                { start: '11:00', end: '12:00' },
             ],
             afternoon: [
-                { start: '13:00', end: '15:00' },
-                { start: '15:00', end: '17:00' },
+                { start: '13:00', end: '14:00' },
+                { start: '11:00', end: '15:00' },
+                { start: '15:00', end: '16:00' },
+                { start: '16:00', end: '17:00' },
             ],
             night: [
-                { start: '19:00', end: '21:00' },
-                { start: '21:00', end: '23:00' },
+                { start: '19:00', end: '20:00' },
+                { start: '20:00', end: '21:00' },
+                { start: '21:00', end: '22:00' },
+                { start: '22:00', end: '23:00' },
             ],
         };
 

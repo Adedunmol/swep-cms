@@ -16,6 +16,6 @@ router.route('/doctor-appointments').get(verifyJWT, verifyRole(['doctor']), getD
 
 router.post('/', validateAppointmentInput, AppointmentController.bookAppointment);
 router.get('/available', AppointmentController.getAvailableTimeSlots);
-
+router.get('/user-appointments', verifyJWT, AppointmentController.getUserAppointments)
 
 export default router
