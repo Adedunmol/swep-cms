@@ -70,6 +70,7 @@ class DoctorController {
             const doctor = await Doctor.createDoctor({ name: req.body.name, email: req.body.email, officeNumber: req.body.officeNumber, password });
             res.status(201).json({ status: 'success', data: doctor });
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to create doctor' });
         }
     }

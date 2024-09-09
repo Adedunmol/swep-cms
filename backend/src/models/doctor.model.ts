@@ -13,7 +13,7 @@ class Doctor{
             .returning(['id', 'name', 'email', 'phone_number'])
             .insert({
             email: data.email,
-            phone_number: data.officeNumber, // modify column
+            office_number: data.officeNumber,
             name: data.name,
             password: data.password
         })
