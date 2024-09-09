@@ -170,6 +170,7 @@ export const getDoctorAppointmentsController = async (req: Request, res: Respons
 
         return res.status(200).json({ status: 'success', message: 'appointments retrieved successfully', data: appointments })
     } catch(err: any) {
+        console.log(err)
         return res.status(400).json({ status: 'error', message: 'error retrieving appointments', data: null })
     }
 }

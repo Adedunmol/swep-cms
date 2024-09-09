@@ -29,6 +29,12 @@ class Doctor{
         return doctor[0]
     }
 
+    async findDoctorWithEmail(email: string) {
+        const doctor = await db('doctors').where({ email })
+
+        return doctor[0]
+    }
+
     async findAllDoctors() {
         let doctors: any[]
 

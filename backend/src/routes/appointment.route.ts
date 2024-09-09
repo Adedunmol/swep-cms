@@ -5,12 +5,13 @@ import { createAppointmentController, getAllAppointmentsController, getAppointme
 import { verifyRole } from '../middlewares/verify-role';
 import AppointmentController from '../controllers/appointment.controller';
 import { validateAppointmentInput } from '../utils/validation-middleware';
+import verifyJWT from '../middlewares/verify-jwt';
 
 const router = Router()
 
 // router.route('/').post(validateResource(createAppointmentSchema), createAppointmentController)
 // router.route('/').get(verifyRole(['doctor', 'staff']), getAllAppointmentsController)
-router.route('/doctor-appointments').get(verifyRole(['doctor']), getDoctorAppointmentsController)
+router.route('/doctor-appointments').get(verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
 // router.route('/:id').get(verifyRole(['doctor', 'staff']), validateResource(getAppointmentSchema), getAppointmentController)
 
 router.post('/', validateAppointmentInput, AppointmentController.bookAppointment);

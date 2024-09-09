@@ -4,12 +4,18 @@ export const createDoctorSchema = object({
     body: object({
         name: string({ required_error: "name is required" }),
         phoneNumber: string({ required_error: "phoneNumber is required" }),
-        password: string().optional(),
-        passwordConfirmation: string().optional(),
+        password: string({ required_error: "password is required" }),
+        passwordConfirmation: string({ required_error: "passwordConfirmation is required" }),
         email: string({ required_error: "email is required" }).email("Not a valid email").refine((e) => e.includes("oauife"), { message: "Not a valid school email", path: ["email"] }),
     }).refine((data) => data.password === data.passwordConfirmation, {
         message: "Passwords do not match",
         path: ["passwordConfirmation"]
+    })
+})
+export const loginDoctorSchema = object({
+    body: object({
+        password: string({ required_error: 'password is required' }),
+        email: string({ required_error: "email is required" }).email("Not a valid email").refine((e) => e.includes("oauife"), { message: "Not a valid school email", path: ["email"] }),
     })
 })
 
@@ -25,3 +31,4 @@ export const updateDoctorSchema = object({
 
 export type CreateDoctorInput = input<typeof createDoctorSchema>;
 export type UpdateDoctorInput = input<typeof updateDoctorSchema>;
+export type LoginDoctorInput = input<typeof loginDoctorSchema>;
