@@ -12,7 +12,7 @@ const router = Router()
 // router.route('/').post(validateResource(createAppointmentSchema), createAppointmentController)
 // router.route('/').get(verifyRole(['doctor', 'staff']), getAllAppointmentsController)
 router.route('/doctor-appointments').get(verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
-// router.route('/:id').get(verifyRole(['doctor', 'staff']), validateResource(getAppointmentSchema), getAppointmentController)
+router.route('/:id').get(validateResource(getAppointmentSchema), AppointmentController.getAppointment)
 
 router.post('/', validateAppointmentInput, AppointmentController.bookAppointment);
 router.get('/available', AppointmentController.getAvailableTimeSlots);

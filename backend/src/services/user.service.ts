@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import userModel from '../models/user.model'
+import recordModel from '../models/record.model'
 
 class UserService {
     async createUser(data: any) {
@@ -8,7 +9,11 @@ class UserService {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        return userModel.createUser({ email, firstName, lastName, role, password: hashedPassword })
+        const user = await userModel.createUser({ email, firstName, lastName, role, password: hashedPassword })
+
+        await recordModel.createRecord(user.id)
+
+        return user
     }
     
     async validatePassword({ password, email }: { email: string, password: string }) {

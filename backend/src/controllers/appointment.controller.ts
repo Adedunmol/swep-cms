@@ -75,10 +75,11 @@ class AppointmentController {
 
     async getAppointment(req: Request, res: Response) {
         try {
+            const { id: appointmentId } = req.params
             //@ts-ignore
-            const appointments = await Appointment.findAppointment(req.user.id)
+            const appointment = await Appointment.findAppointment(appointmentId)
 
-            return res.status(200).json({ status: 'success', data: appointments })
+            return res.status(200).json({ status: 'success', data: appointment })
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Failed to retrieve appointments' });
