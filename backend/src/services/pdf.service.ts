@@ -14,9 +14,9 @@ class PDFService {
             doc.fontSize(18).text('Appointment Details', { align: 'center' });
             doc.moveDown();
             doc.fontSize(12).text(`Date: ${appointment.date}`);
-            doc.text(`Time: ${appointment.startTime} - ${appointment.endTime}`);
-            doc.text(`Doctor ID: ${appointment.doctorId}`);
-            doc.text(`Patient ID: ${appointment.userId}`);
+            doc.text(`Time: ${appointment.start_time} - ${appointment.end_time}`);
+            doc.text(`Doctor ID: ${appointment.doctor_id}`);
+            doc.text(`Patient ID: ${appointment.user_id}`);
 
             doc.end();
         });

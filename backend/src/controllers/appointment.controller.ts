@@ -65,6 +65,9 @@ class AppointmentController {
     async getUserAppointments(req: Request, res: Response) {
         try {
             //@ts-ignore
+            if (!req.user.id) return res.sendStatus(401)
+            
+            //@ts-ignore
             const appointments = await Appointment.findUserAppointments(req.user.id)
 
             return res.status(200).json({ status: 'success', data: appointments })
