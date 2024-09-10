@@ -45,8 +45,8 @@ class Appointment {
                                     .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
                                     .join('users', 'users.id', '=', 'appointments.user_id')
                                     .where('user_id', userId)
-                                    .andWhere('created_at', '>=', new Date())
-                                    .orderBy('created_at', 'asc')
+                                    .andWhere('appointments.created_at', '>=', new Date())
+                                    .orderBy('appointments.created_at', 'asc')
 
         return appointments
     }
