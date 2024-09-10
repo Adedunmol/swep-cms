@@ -55,10 +55,11 @@ class Doctor{
         return doctor
     }
 
-    async findDoctorsWithLeastAppointments() {
+    async findDoctorsWithLeastAppointments(shift: 'morning' | 'afternoon' | 'evening') {
         const doctors = await db('doctors').select('doctors.id', 'doctors.email', 'doctors.name')
                                         .leftJoin('appointments', 'doctors.id', '=', 'appointments.doctor_id')
                                         .where({ role: 'doctor' })
+                                        .andWhere({ shift })
                                         .groupBy('doctors.id')
                                         .count('appointments.doctor_id as appointment_count')
                                         .orderBy('appointment_count', 'asc')
