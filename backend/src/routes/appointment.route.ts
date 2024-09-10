@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import validateResource from '../middlewares/validate-resource';
 import { createAppointmentSchema, getAppointmentSchema } from '../schema/appointment.schema';
-import { createAppointmentController, getAllAppointmentsController, getAppointmentController, getDoctorAppointmentsController } from '../controllers/appointment.controller';
-import { verifyRole } from '../middlewares/verify-role';
 import AppointmentController from '../controllers/appointment.controller';
 import { validateAppointmentInput } from '../utils/validation-middleware';
 import verifyJWT from '../middlewares/verify-jwt';

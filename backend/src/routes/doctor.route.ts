@@ -10,6 +10,7 @@ import { getDoctorAppointmentsController } from '../controllers/appointment.cont
 const router = express.Router();
 
 router.get('/least-appointed', DoctorController.getLeastAppointedDoctors)
+router.get('/doctor-appointments', verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
 
 
 router.get('/', DoctorController.getAllDoctors);
@@ -19,7 +20,5 @@ router.patch('/:id', validateResource(updateDoctorSchema), DoctorController.upda
 router.delete('/:id', DoctorController.deleteDoctor);
 
 router.post('/login', validateResource(loginDoctorSchema), DoctorController.loginDoctor)
-router.get('/doctor-appointments', verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
-
 
 export default router;
