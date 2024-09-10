@@ -31,7 +31,6 @@ class Appointment {
     }
 
     async findAppointment(appointmentId: string) {
-        console.log('appointmentId: ', appointmentId)
         const appointment = await db('appointments')
                                     .select('records.*', 'appointments.*')
                                     .join('records', 'appointments.user_id', '=', 'records.user_id')
@@ -53,16 +52,13 @@ class Appointment {
         //                             .orderBy('appointments.created_at', 'asc')
 
         const appointments = await db('appointments')
-  .select(
-    'appointments.*',
-    'users.email AS patient_email',
-    'users.first_name AS patient_first_name',
-    'users.last_name AS patient_last_name'
-  )
-  .join('users', 'users.id', '=', 'appointments.user_id')
-  .where('appointments.user_id', userId)
-  .andWhereRaw('DATE(appointments.date) >= ?', [currentDate]) // Use `whereRaw` for custom SQL
-  .orderBy('appointments.created_at', 'asc');
+                                    .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
+                                    .join('users', 'users.id', '=', 'appointments.user_id')
+                                    .where('appointments.user_id', userId)
+                                    .andWhereRaw('DATE(appointments.date) >= ?', [currentDate]) // Use `whereRaw` for custom SQL
+                                    .join('doctors', 'doctors.id', '=', 'appointments.doctor_id')
+                                    .select('doctors.email AS doctor_email', 'doctors.name AS doctor_name', 'doctors.name AS doctor_office')
+                                    .orderBy('appointments.created_at', 'asc');
 
         return appointments
     }

@@ -9,10 +9,11 @@ import verifyJWT from '../middlewares/verify-jwt';
 
 const router = Router()
 
+router.get('/doctor-appointments', verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
+
 router.get('/:id', validateResource(getAppointmentSchema), AppointmentController.getAppointment)
 // router.route('/').post(validateResource(createAppointmentSchema), createAppointmentController)
 // router.route('/').get(verifyRole(['doctor', 'staff']), getAllAppointmentsController)
-router.route('/doctor-appointments').get(verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
 
 router.post('/', validateAppointmentInput, AppointmentController.bookAppointment);
 router.get('/available', AppointmentController.getAvailableTimeSlots);
