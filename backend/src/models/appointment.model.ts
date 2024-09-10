@@ -31,6 +31,7 @@ class Appointment {
     }
 
     async findAppointment(appointmentId: string) {
+        console.log('appointmentId: ', appointmentId)
         const appointment = await db('appointments')
                                     .select('records.*', 'appointments.*')
                                     .join('records', 'appointments.user_id', '=', 'records.user_id')
