@@ -108,6 +108,7 @@ class AppointmentController {
     private static async checkAvailability(doctorId: number, date: string, startTime: string, endTime: string): Promise<boolean> {
         // Check if doctor is scheduled for the given date
         const roster = await Roster.findScheduledDoctorForDate(doctorId, date);
+        console.log("roster: ", roster)
         if (!roster) {
             return false;
         }
@@ -115,6 +116,7 @@ class AppointmentController {
         // Check if there are any overlapping appointments
         const overlappingAppointments = await Appointment.fetchOverlaps(doctorId, date, startTime, endTime)
 
+        console.log("overlaps: ", overlappingAppointments)
         return overlappingAppointments.length === 0;
     }
 
