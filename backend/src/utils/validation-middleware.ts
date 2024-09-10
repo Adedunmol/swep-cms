@@ -16,7 +16,7 @@ export function validateAppointmentInput(req: Request, res: Response, next: Next
     //     return res.status(400).json({ error: 'Invalid time format' });
     // }
 
-    if (!['morning', 'afternoon', 'night'].includes(shift)) {
+    if (!['morning', 'afternoon', 'evening'].includes(shift)) {
         return res.status(400).json({ error: 'Invalid shift value' });
     }
 

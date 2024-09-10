@@ -17,15 +17,16 @@ class AppointmentController {
             const { userId, date, reason, shift } = req.body;
 
             const doctors = await Doctor.findDoctorsWithLeastAppointments()
-
+            console.log("doctors: ", doctors)
             const leastAppointedDoctor = doctors[0]
 
             // Check if the doctor is available (scheduled and not blocked)
             // const isAvailable = await AppointmentController.checkAvailability(doctorId, date, startTime, endTime);
 
             for (const slot of shifts[shift as Shifts]) {
+                console.log("slot: ", slot)
                 const isAvailable = await AppointmentController.checkAvailability(leastAppointedDoctor.id as number, date, slot.start, slot.end);
-
+                console.log("isAvailable: ", isAvailable)
                 if (isAvailable) {
                     // Create appointment
                     const appointment = await Appointment.createAppointment({
@@ -83,6 +84,8 @@ class AppointmentController {
             const { id: appointmentId } = req.params
             //@ts-ignore
             const appointment = await Appointment.findAppointment(appointmentId)
+
+            if (!appointment) return res.status(404).json({ status: 'no appointment with this id' })
 
             return res.status(200).json({ status: 'success', data: appointment })
         } catch (error) {

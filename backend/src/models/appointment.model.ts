@@ -55,9 +55,17 @@ class Appointment {
         let appointment: any[]
 
         if (!doctorId) {
-            appointment = await db('appointments').where({}).orderBy('created_at', 'asc')
+            appointment = await db('appointments')
+                                .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
+                                .join('users', 'users.id', '=', 'appointments.user_id')
+                                .where({})
+                                .orderBy('created_at', 'asc')
         } else {
-            appointment = await db('appointments').where({}).andWhere({ doctor_id: doctorId }).orderBy('created_at', 'asc')
+            appointment = await db('appointments')
+                                .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
+                                .join('users', 'users.id', '=', 'appointments.user_id')
+                                .where({ doctor_id: doctorId })
+                                .orderBy('created_at', 'asc')
         }
 
         return appointment
