@@ -35,7 +35,7 @@ class Appointment {
         const appointment = await db('appointments')
                                     .select('records.*', 'appointments.*')
                                     .join('records', 'appointments.user_id', '=', 'records.user_id')
-                                    .where('appointments.id', appointmentId)
+                                    .where('appointments.id', appointmentId.trim())
                                     .join('users', 'users.id', '=', 'records.user_id')
                                     .select('users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
 
