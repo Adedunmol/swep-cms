@@ -72,14 +72,18 @@ class Appointment {
     }
 
     async fetchOverlaps(doctorId: number, date: string, startTime: string, endTime: string) {
-        const appointments = await db('appointments')
-                                    .where('doctor_id', doctorId)
-                                    .where('date', date)
-                                    .where(function () {
-                                    this.where('start_time', '<', endTime).andWhere('end_time', '>', startTime);
-                                });
-
+        try {
+            const appointments = await db('appointments')
+            .where('doctor_id', doctorId)
+            .where('date', date)
+            .where(function () {
+            this.where('start_time', '<', endTime).andWhere('end_time', '>', startTime);
+        });
+        console.log(appointments)
         return appointments
+        } catch(err) {
+            console.log(err)
+        }
     }
 }
 

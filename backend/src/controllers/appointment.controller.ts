@@ -85,7 +85,7 @@ class AppointmentController {
             //@ts-ignore
             const appointment = await Appointment.findAppointment(appointmentId)
 
-            if (!appointment) return res.status(404).json({ status: 'no appointment with this id' })
+            if (!appointment) return res.status(404).json({ status: 'error', message: 'no appointment with this id' })
 
             return res.status(200).json({ status: 'success', data: appointment })
         } catch (error) {
@@ -117,7 +117,7 @@ class AppointmentController {
         const overlappingAppointments = await Appointment.fetchOverlaps(doctorId, date, startTime, endTime)
 
         console.log("overlaps: ", overlappingAppointments)
-        return overlappingAppointments.length === 0;
+        return overlappingAppointments?.length === 0;
     }
 
     private static async findAvailableTimeSlots(date: string) {
