@@ -55,14 +55,34 @@ class Doctor{
         return doctor
     }
 
-    async findDoctorsWithLeastAppointments(shift: 'morning' | 'afternoon' | 'evening') {
+    async findDoctorsWithLeastAppointments(shift: 'morning' | 'afternoon' | 'evening', date: string) {
         const doctors = await db('doctors').select('doctors.id', 'doctors.email', 'doctors.name')
                                         .leftJoin('appointments', 'doctors.id', '=', 'appointments.doctor_id')
-                                        .where({ role: 'doctor' })
-                                        .andWhere({ shift })
+                                        .where('doctors.role', 'doctor')
                                         .groupBy('doctors.id')
                                         .count('appointments.doctor_id as appointment_count')
                                         .orderBy('appointment_count', 'asc')
+                                        .join('rosters', 'rosters.doctor_id', '=', 'doctors.id')
+                                        .where('rosters.date', date)
+                                        .andWhere('rosters.shift', shift)
+
+//         const doctors = await db('doctors')
+//   .select('doctors.id', 'doctors.email', 'doctors.name')
+//   .leftJoin('appointments', function () {
+//     this.on('doctors.id', '=', 'appointments.doctor_id')
+//     //   .andOn('appointments.date', '=', date)
+//     //   .andOn('appointments.shift', '=', shift);
+//   })
+//   .leftJoin('rosters', function () {
+//     this.on('doctors.id', '=', 'rosters.doctor_id')
+//   })
+//   .where('rosters.date', '=', date)
+//   .where('doctors.role', 'doctor')
+//   .andWhere('rosters.shift', '=', shift)
+//   .groupBy('doctors.id')
+//   .count('appointments.doctor_id as appointment_count')
+//   .orderBy('appointment_count', 'asc');
+
         return doctors
     }
 }

@@ -5,6 +5,9 @@ import { createDoctorSchema, loginDoctorSchema, updateDoctorSchema } from '../sc
 
 const router = express.Router();
 
+router.get('/least-appointed', DoctorController.getLeastAppointedDoctors)
+
+
 router.get('/', DoctorController.getAllDoctors);
 router.get('/:id', DoctorController.getDoctorById);
 router.post('/', validateResource(createDoctorSchema), DoctorController.createDoctor);

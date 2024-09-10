@@ -16,7 +16,8 @@ class AppointmentController {
         try {
             const { userId, date, reason, shift } = req.body;
 
-            const doctors = await Doctor.findDoctorsWithLeastAppointments(shift)
+            const doctors = await Doctor.findDoctorsWithLeastAppointments(shift, date)
+            // const doctors = await Roster.fetchShiftScheduledDoctors(date, shift)
             console.log("doctors: ", doctors)
             const leastAppointedDoctor = doctors[0]
 

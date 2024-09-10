@@ -56,6 +56,22 @@ class Roster{
         return doctors
     }
 
+    async fetchShiftScheduledDoctors(date: string, shift: 'morning' | 'afternoon' | 'evening') {
+        // const doctors = await db('rosters')
+        //                         .select('rosters.*', 'doctors.*')
+        //                         .where('rosters.date', date)
+        //                         .join('doctors', 'rosters.doctor_id', 'doctors.id')
+        //                         // .andWhere('rosters.shift', shift)
+        const doctors = await db('doctors')
+  .select('doctors.id', 'doctors.email', 'doctors.name')
+  .join('rosters', 'rosters.doctor_id', '=', 'doctors.id')
+  .where('doctors.role', 'doctor')
+  .andWhere('rosters.date', date)
+  .andWhere('rosters.shift', shift);
+        console.log(doctors)
+        return doctors
+    }
+
     async findScheduledDoctorForDate(doctorId: number, date: string) {
         const roster = await db('rosters').where({ doctor_id: doctorId }).andWhere({ date }).first()
         return roster

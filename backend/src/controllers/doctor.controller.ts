@@ -4,6 +4,7 @@ import { CreateDoctorInput, UpdateDoctorInput } from '../schema/doctor.schema';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import doctorService from '../services/doctor.service';
+import rosterModel from '../models/roster.model';
 
 const ACCESS_TOKEN_EXPIRATION = 15 * 60 * 1000
 
@@ -42,6 +43,18 @@ class DoctorController {
             const doctors = await Doctor.findAllDoctors();
             res.json({ status: 'success', data: doctors });
         } catch (error) {
+            res.status(500).json({ error: 'Failed to retrieve doctors' });
+        }
+    }
+
+    async getLeastAppointedDoctors(req: Request, res: Response) {
+        try {
+            const { shift, date } = req.body
+            console.log(shift, date)
+            const doctors = await Doctor.findDoctorsWithLeastAppointments(shift, date);
+            res.json({ status: 'success', data: doctors });
+        } catch (error) {
+            console.log(error)
             res.status(500).json({ error: 'Failed to retrieve doctors' });
         }
     }
