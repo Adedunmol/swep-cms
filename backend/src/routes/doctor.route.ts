@@ -10,7 +10,7 @@ import { getDoctorAppointmentsController } from '../controllers/appointment.cont
 const router = express.Router();
 
 router.get('/least-appointed', DoctorController.getLeastAppointedDoctors)
-router.get('/doctor-appointments', verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
+router.get('/appointments', verifyJWT, verifyRole(['doctor']), getDoctorAppointmentsController)
 
 
 router.get('/', DoctorController.getAllDoctors);
