@@ -1,4 +1,5 @@
 import db from "../database";
+import { getCurrentDate } from "../utils/date-util";
 
 interface CreateAppointment {
     doctorId: string
@@ -41,12 +42,27 @@ class Appointment {
     }
 
     async findUserAppointments(userId: string) {
+        const currentDate = new Date().toISOString().split('T')[0];
+        console.log(currentDate)
+        console.log(userId)
+        // const appointments = await db('appointments')
+        //                             .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
+        //                             .join('users', 'users.id', '=', 'appointments.user_id')
+        //                             .where('user_id', userId)
+        //                             .andWhere('DATE(appointments.date) >= ?', currentDate)
+        //                             .orderBy('appointments.created_at', 'asc')
+
         const appointments = await db('appointments')
-                                    .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
-                                    .join('users', 'users.id', '=', 'appointments.user_id')
-                                    .where('user_id', userId)
-                                    .andWhere('appointments.created_at', '>=', new Date())
-                                    .orderBy('appointments.created_at', 'asc')
+  .select(
+    'appointments.*',
+    'users.email AS patient_email',
+    'users.first_name AS patient_first_name',
+    'users.last_name AS patient_last_name'
+  )
+  .join('users', 'users.id', '=', 'appointments.user_id')
+  .where('appointments.user_id', userId)
+  .andWhereRaw('DATE(appointments.date) >= ?', [currentDate]) // Use `whereRaw` for custom SQL
+  .orderBy('appointments.created_at', 'asc');
 
         return appointments
     }

@@ -58,7 +58,7 @@ class AppointmentController {
                     return res.status(201).json({ status: 'success', data: appointment });
                 }
             }
-            return res.status(400).json({ error: 'Time slot not available' });
+            return res.status(400).json({ error: 'Time slot not available or no doctor scheduled on roster' });
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: 'Failed to book appointment' });
