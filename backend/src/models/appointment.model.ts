@@ -35,7 +35,7 @@ class Appointment {
         const appointment = await db('appointments')
                                     .select('records.*', 'appointments.*')
                                     .join('records', 'appointments.user_id', '=', 'records.user_id')
-                                    .where('appointments.id', appointmentId.trim())
+                                    .where('appointments.id', appointmentId)
                                     .join('users', 'users.id', '=', 'records.user_id')
                                     .select('users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
 
@@ -44,8 +44,7 @@ class Appointment {
 
     async findUserAppointments(userId: string) {
         const currentDate = new Date().toISOString().split('T')[0];
-        console.log(currentDate)
-        console.log(userId)
+
         // const appointments = await db('appointments')
         //                             .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
         //                             .join('users', 'users.id', '=', 'appointments.user_id')
