@@ -83,6 +83,7 @@ class AppointmentController {
     async getAppointment(req: Request, res: Response) {
         try {
             const { id: appointmentId } = req.params
+            if (!appointmentId) return res.status(400).json({ status: 'error', message: 'appointmentId is required' })
             //@ts-ignore
             const appointment = await Appointment.findAppointment(appointmentId)
 
