@@ -21,8 +21,7 @@ class DoctorController {
                     id: user.id,
                     role: user.role,
                     email: user.email,
-                    firstName: user.first_name,
-                    lastName: user.last_name
+                    name: user.name,
                 }
             },
             process.env.ACCESS_TOKEN_SECRET as string,

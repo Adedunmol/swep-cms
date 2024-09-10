@@ -35,7 +35,8 @@ class AppointmentController {
                         date,
                         startTime: slot.start,
                         endTime: slot.end,
-                        reason
+                        reason,
+                        shift
                     });
 
                     // Send notifications

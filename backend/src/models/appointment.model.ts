@@ -7,6 +7,7 @@ interface CreateAppointment {
     endTime: string
     userId: string
     reason: string
+    shift: string
 }
 
 class Appointment {
@@ -19,7 +20,8 @@ class Appointment {
             start_time: data.startTime,
             end_time: data.endTime,
             user_id: data.userId,
-            reason: data.reason
+            reason: data.reason,
+            shift: data.shift
         })
 
         const updatedAppointment: any = appointment
@@ -28,13 +30,23 @@ class Appointment {
     }
 
     async findAppointment(appointmentId: string) {
-        const appointment = await db('appointments').select('records.*', 'appointments.*').join('records', 'appointments.user_id', '=', 'records.user_id').where('appointments.id', appointmentId)
+        const appointment = await db('appointments')
+                                    .select('records.*', 'appointments.*')
+                                    .join('records', 'appointments.user_id', '=', 'records.user_id')
+                                    .where('appointments.id', appointmentId)
+                                    .join('users', 'users.id', '=', 'records.user_id')
+                                    .select('users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
 
         return appointment[0]
     }
 
     async findUserAppointments(userId: string) {
-        const appointments = await db('appointments').where('user_id', userId)
+        const appointments = await db('appointments')
+                                    .select('appointments.*', 'users.email AS patient_email', 'users.first_name AS patient_first_name', 'users.last_name AS patient_last_name')
+                                    .join('users', 'users.id', '=', 'appointments.user_id')
+                                    .where('user_id', userId)
+                                    .andWhere('created_at', '>=', new Date())
+                                    .orderBy('created_at', 'asc')
 
         return appointments
     }
